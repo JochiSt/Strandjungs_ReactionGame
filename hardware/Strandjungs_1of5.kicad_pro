@@ -381,6 +381,7 @@
         "name": "POWER",
         "nets": [
           "+12V",
+          "+5V",
           "/Channel 0/MAG_RTN",
           "/Channel 1/MAG_RTN",
           "/Channel 2/MAG_RTN",
