@@ -25,6 +25,11 @@
 #define SEL_MODE_1  2 // mode selection 1
 #define SEL_MODE_2  3 // mode selection 2
 
+enum DROP_MODE {
+  SINGLE_ROD,
+  DUAL_ROD
+};
+
 // array of the magnet outputs
 int magnets[5] = {8, 9, 10, 11, 12};
 
@@ -53,8 +58,17 @@ void loop() {
   bool sel_0 = digitalRead(SEL_MODE_1);
   bool sel_1 = digitalRead(SEL_MODE_2);
 
+  DROP_MODE mode = sel_1 << 1 | sel_0;
+  
   // if button is pressed dice rod and wait random time
-  int rod = random(0, 4);           // dice the rod, which should be dropped
+  int rod1 = random(0, 4);          // dice the rod, which should be dropped
+  int rod2 = random(0, 4);
+
+  // ensure, that both rods are different
+  while(rod1 == rod2){
+    rod2 = random(0, 4);   
+  }
+   
   float timewait = random(0, 800);  // wait between 0 and 800 (unit 10ms)
   
   // wait until button is pressed
@@ -67,7 +81,17 @@ void loop() {
   // wait
   delay(timewait * 10 + 2000); // unit ms
 
-  digitalWrite(magnets[rod], LOW);
-  delay(1000);  // wait for 1s
-  digitalWrite(magnets[rod], HIGH);
+  // drop the rods according to the mode selection
+  if(mode == SINGLE_ROD || mode == DUAL_ROD ){
+    digitalWrite(magnets[rod1], LOW);
+  }
+  if(mode == DUAL_ROD){
+    digitalWrite(magnets[rod2], LOW);
+  }
+  
+  delay(200);  // wait for the rod(s) to fall down
+  // set all rods to be active again
+  for(int i=0; i<5; i++){
+    digitalWrite( magnets[i], HIGH);
+  }
 }
