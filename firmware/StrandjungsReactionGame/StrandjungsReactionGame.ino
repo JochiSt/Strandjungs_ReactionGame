@@ -25,6 +25,11 @@
 #define SEL_MODE_1  2 // mode selection 1
 #define SEL_MODE_2  3 // mode selection 2
 
+#define BOARD_LED   13 // on board LED
+
+#define COIL_ON   LOW
+#define COIL_OFF  HIGH
+
 enum DROP_MODE {
   SINGLE_ROD,
   DUAL_ROD,
@@ -41,8 +46,10 @@ void setup() {
   // outputs to 5 electro magnets
   for(int i=0; i<5; i++){
     pinMode( magnets[i], OUTPUT );
-    digitalWrite( magnets[i], HIGH);
+    digitalWrite( magnets[i], COIL_OFF);
   }
+
+  pinMode(BOARD_LED, OUTPUT);
 
   // trigger button input
   pinMode( BTN_TRG, INPUT_PULLUP );
@@ -53,6 +60,14 @@ void setup() {
   // mode selection inputs
   pinMode( SEL_MODE_1, INPUT_PULLUP );
   pinMode( SEL_MODE_2, INPUT_PULLUP );
+
+  for(int i=0; i<5; i++){
+    digitalWrite(BOARD_LED, COIL_ON);
+    digitalWrite(magnets[i], COIL_ON);
+    delay(1000);
+    digitalWrite(BOARD_LED, COIL_OFF);
+    digitalWrite(magnets[i], COIL_OFF);
+  }
 }
 
 void loop() {
@@ -61,7 +76,7 @@ void loop() {
   bool sel_1 = digitalRead(SEL_MODE_2);
 
   DROP_MODE mode = sel_1 << 1 | sel_0;
-  
+
   // if button is pressed dice rod and wait random time
   int rod1 = random(0, 4);          // dice the rod, which should be dropped
   int rod2 = random(0, 4);
@@ -71,24 +86,24 @@ void loop() {
     rod2 = random(0, 4);   
   }
    
-  float timewait = random(0, 800);  // wait between 0 and 800 (unit 10ms)
   
   // wait until button is pressed
   bool trigger_state = digitalRead(BTN_TRG);
   while(trigger_state == digitalRead(BTN_TRG)){
-    yield();
+    delay(10);
   }
   // button is triggered
 
   // wait
-  delay(timewait * 10 + 2000); // unit ms
+  float timewait = random(0, 400);  // wait between 0 and 800 (unit 10ms)  
+  delay( (timewait * 10) + 1000);      // unit ms
 
   // drop the rods according to the mode selection
   if(mode == SINGLE_ROD || mode == DUAL_ROD ){
-    digitalWrite(magnets[rod1], LOW);
+    digitalWrite(magnets[rod1], COIL_OFF);
   }
   if(mode == DUAL_ROD){
-    digitalWrite(magnets[rod2], LOW);
+    digitalWrite(magnets[rod2], COIL_OFF);
   }
   if(mode == DUAL_ROD_TIME){
     float timewait = random(0, 800);  // wait between 0 and 800 (unit 10ms)  
@@ -103,6 +118,6 @@ void loop() {
   
   // set all rods to be active again
   for(int i=0; i<5; i++){
-    digitalWrite( magnets[i], HIGH);
+    digitalWrite( magnets[i], COIL_ON);
   }
 }
