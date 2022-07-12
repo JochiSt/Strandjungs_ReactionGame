@@ -13,8 +13,8 @@
    Mode:
     A - Drop single wood
     B - Drop two woods at the same time
-    C - Drop one or two woods each at their individual time
-
+    C - Drop two woods each at their individual time
+    D - Drop all rods after each other with their individual time
 
    If trigger button is pressed, wait 2 to 10 seconds, then release a wooden rod, which should be catched by the player.
 */
@@ -27,7 +27,9 @@
 
 enum DROP_MODE {
   SINGLE_ROD,
-  DUAL_ROD
+  DUAL_ROD,
+  DUAL_ROD_TIME,
+  ALL_ROD_TIME
 };
 
 // array of the magnet outputs
@@ -88,8 +90,17 @@ void loop() {
   if(mode == DUAL_ROD){
     digitalWrite(magnets[rod2], LOW);
   }
+  if(mode == DUAL_ROD_TIME){
+    float timewait = random(0, 800);  // wait between 0 and 800 (unit 10ms)  
+    delay(timewait * 10 + 2000);      // unit ms  
+    digitalWrite(magnets[rod2], COIL_OFF);
+  }
+  if(mode == ALL_ROD_TIME){
+      
+  }
   
-  delay(200);  // wait for the rod(s) to fall down
+  delay(1000);  // wait for the rod(s) to fall down
+  
   // set all rods to be active again
   for(int i=0; i<5; i++){
     digitalWrite( magnets[i], HIGH);
