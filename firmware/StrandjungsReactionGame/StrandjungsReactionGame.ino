@@ -42,7 +42,8 @@ int magnets[5] = {8, 9, 10, 11, 12};
 
 void setup() {
   // put your setup code here, to run once:
-
+  randomSeed(analogRead(A0));
+    
   // outputs to 5 electro magnets
   for(int i=0; i<5; i++){
     pinMode( magnets[i], OUTPUT );
