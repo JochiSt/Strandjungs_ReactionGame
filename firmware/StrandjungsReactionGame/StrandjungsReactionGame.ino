@@ -94,14 +94,12 @@ void loop() {
 
   DROP_MODE mode = sel_1 << 1 | sel_0;
 
-  // if button is pressed dice rod and wait random time
   // random(start, end) - inclusive start, exclusive end
   int rod1 = random(0, 5);          // dice the rod, which should be dropped
   int rod2 = random(0, 5);
-
   // ensure, that both rods are different
   while(rod1 == rod2){
-    rod2 = random(0, 5);   
+    rod2 = random(0, 5); 
   }
 
   ///////////////////////////////////////////////////////
