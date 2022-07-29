@@ -62,22 +62,37 @@ void setup() {
   pinMode( SEL_MODE_1, INPUT_PULLUP );
   pinMode( SEL_MODE_2, INPUT_PULLUP );
 
+  Serial.begin(115200);
+  Serial.print("Strandjungs reaction game initialised...\n");
+
   for(int i=0; i<5; i++){
+    Serial.print("Testing channel: ");
+    Serial.print(i);
+    Serial.print("\n");
     digitalWrite(BOARD_LED, COIL_ON);
     digitalWrite(magnets[i], COIL_ON);
     delay(1000);
     digitalWrite(BOARD_LED, COIL_OFF);
     digitalWrite(magnets[i], COIL_OFF);
   }
+
+  digitalWrite(BOARD_LED, true);
 }
 
 // function to define the waiting time for the rods
 void wait_rod(){
-  float timewait = random(0, 400);  // wait between 0 and 800 (unit 10ms)  
-  delay( (timewait * 10) + 1000);   // unit ms
+  float timewait = random(0, 400);  // wait between 0 and 800 (unit 10ms)
+  timewait = (timewait*10) + 1000;
+  Serial.print("Waiting for: ");
+  Serial.print( timewait );
+  Serial.print("ms \n");
+  delay( timewait);   // unit ms
 }
 
 void loop() {
+  Serial.print("waiting for button\n");
+  digitalWrite(BOARD_LED, false);
+  
   ///////////////////////////////////////////////////////
   // wait until button is pressed
   bool trigger_state = digitalRead(BTN_TRG);
@@ -86,13 +101,17 @@ void loop() {
   }
   // button is triggered
   // if button is pressed dice rod and wait random time
-    
+  digitalWrite(BOARD_LED, true);
+  Serial.print("Button pressed\n");
   ///////////////////////////////////////////////////////
   // check mode pins
   bool sel_0 = digitalRead(SEL_MODE_1);
   bool sel_1 = digitalRead(SEL_MODE_2);
 
   DROP_MODE mode = sel_1 << 1 | sel_0;
+  Serial.print("Mode: ");
+  Serial.print(mode);
+  Serial.print("\n");
 
   // random(start, end) - inclusive start, exclusive end
   int rod1 = random(0, 5);          // dice the rod, which should be dropped
@@ -109,10 +128,16 @@ void loop() {
   ///////////////////////////////////////////////////////
   // drop the rods according to the mode selection
   if(mode == SINGLE_ROD || mode == DUAL_ROD || mode == DUAL_ROD_TIME){
+    Serial.print("Dropping Rod: ");
+    Serial.print(rod1);
+    Serial.print("\n");
     digitalWrite(magnets[rod1], COIL_OFF);
   }
   // drop two rods at the same time
   if(mode == DUAL_ROD){
+    Serial.print("Dropping Rod: ");
+    Serial.print(rod2);
+    Serial.print("\n");
     digitalWrite(magnets[rod2], COIL_OFF);
   }
 
@@ -120,6 +145,9 @@ void loop() {
   // drop two rods after each other
   if(mode == DUAL_ROD_TIME){
     wait_rod();
+    Serial.print("Dropping Rod: ");
+    Serial.print(rod2);
+    Serial.print("\n");
     digitalWrite(magnets[rod2], COIL_OFF);
   }
 
@@ -133,6 +161,9 @@ void loop() {
       }
       // we have found a rod, which is not yet dropped
       // drop rod
+      Serial.print("Dropping Rod: ");
+      Serial.print(rod);
+      Serial.print("\n");
       digitalWrite(magnets[rod], COIL_OFF);
       // mark rod as dropped
       dropped_rods[rod] = true;
@@ -150,4 +181,5 @@ void loop() {
   for(int i=0; i<5; i++){
     digitalWrite( magnets[i], COIL_ON);
   }
+  Serial.print("ready for next try\n");
 }
