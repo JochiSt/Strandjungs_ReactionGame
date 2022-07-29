@@ -78,6 +78,16 @@ void wait_rod(){
 }
 
 void loop() {
+  ///////////////////////////////////////////////////////
+  // wait until button is pressed
+  bool trigger_state = digitalRead(BTN_TRG);
+  while(trigger_state == digitalRead(BTN_TRG)){
+    delay(10);
+  }
+  // button is triggered
+  // if button is pressed dice rod and wait random time
+    
+  ///////////////////////////////////////////////////////
   // check mode pins
   bool sel_0 = digitalRead(SEL_MODE_1);
   bool sel_1 = digitalRead(SEL_MODE_2);
@@ -93,14 +103,6 @@ void loop() {
   while(rod1 == rod2){
     rod2 = random(0, 5);   
   }
-   
-  
-  // wait until button is pressed
-  bool trigger_state = digitalRead(BTN_TRG);
-  while(trigger_state == digitalRead(BTN_TRG)){
-    delay(10);
-  }
-  // button is triggered
 
   // wait
   float timewait = random(0, 400);  // wait between 0 and 800 (unit 10ms)  
