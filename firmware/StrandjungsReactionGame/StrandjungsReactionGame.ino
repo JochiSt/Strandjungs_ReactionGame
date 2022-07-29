@@ -120,7 +120,23 @@ void loop() {
     digitalWrite(magnets[rod2], COIL_OFF);
   }
   if(mode == ALL_ROD_TIME){
+    bool dropped_rods[5] = {false, false, false, false, false};
+    for(int i=0; i<5; i++){
+      int rod = random(0, 5);
+      while( dropped_rods[rod] ){
+        rod = random(0, 5);
+      }
+      // we have found a rod, which is not yet dropped
+      // drop rod
+      digitalWrite(magnets[rod], COIL_OFF);
+      // mark rod as dropped
+      dropped_rods[rod] = true;
       
+      if(i < 4){
+        // wait for all rods, but not for the last one
+        wait_rod();
+      }
+    }
   }
   
   delay(1000);  // wait for the rod(s) to fall down
