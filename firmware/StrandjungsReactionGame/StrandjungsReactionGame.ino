@@ -104,21 +104,29 @@ void loop() {
     rod2 = random(0, 5);   
   }
 
+  ///////////////////////////////////////////////////////
   // wait
   float timewait = random(0, 400);  // wait between 0 and 800 (unit 10ms)  
   delay( (timewait * 10) + 1000);      // unit ms
 
+  ///////////////////////////////////////////////////////
   // drop the rods according to the mode selection
   if(mode == SINGLE_ROD || mode == DUAL_ROD ){
     digitalWrite(magnets[rod1], COIL_OFF);
   }
+  // drop two rods at the same time
   if(mode == DUAL_ROD){
     digitalWrite(magnets[rod2], COIL_OFF);
   }
+
+  // some additional modes, which are more or less experimental
+  // drop two rods after each other
   if(mode == DUAL_ROD_TIME){
     wait_rod();
     digitalWrite(magnets[rod2], COIL_OFF);
   }
+
+  // drop all rods after each other
   if(mode == ALL_ROD_TIME){
     bool dropped_rods[5] = {false, false, false, false, false};
     for(int i=0; i<5; i++){
