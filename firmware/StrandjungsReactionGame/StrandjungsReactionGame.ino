@@ -71,6 +71,12 @@ void setup() {
   }
 }
 
+// function to define the waiting time for the rods
+void wait_rod(){
+  float timewait = random(0, 400);  // wait between 0 and 800 (unit 10ms)  
+  delay( (timewait * 10) + 1000);   // unit ms
+}
+
 void loop() {
   // check mode pins
   bool sel_0 = digitalRead(SEL_MODE_1);
@@ -108,8 +114,7 @@ void loop() {
     digitalWrite(magnets[rod2], COIL_OFF);
   }
   if(mode == DUAL_ROD_TIME){
-    float timewait = random(0, 800);  // wait between 0 and 800 (unit 10ms)  
-    delay(timewait * 10 + 2000);      // unit ms  
+    wait_rod();
     digitalWrite(magnets[rod2], COIL_OFF);
   }
   if(mode == ALL_ROD_TIME){
