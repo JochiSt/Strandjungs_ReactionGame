@@ -106,8 +106,7 @@ void loop() {
 
   ///////////////////////////////////////////////////////
   // wait
-  float timewait = random(0, 400);  // wait between 0 and 800 (unit 10ms)  
-  delay( (timewait * 10) + 1000);      // unit ms
+  wait_rod();
 
   ///////////////////////////////////////////////////////
   // drop the rods according to the mode selection
