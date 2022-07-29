@@ -108,7 +108,7 @@ void loop() {
 
   ///////////////////////////////////////////////////////
   // drop the rods according to the mode selection
-  if(mode == SINGLE_ROD || mode == DUAL_ROD ){
+  if(mode == SINGLE_ROD || mode == DUAL_ROD || mode == DUAL_ROD_TIME){
     digitalWrite(magnets[rod1], COIL_OFF);
   }
   // drop two rods at the same time
