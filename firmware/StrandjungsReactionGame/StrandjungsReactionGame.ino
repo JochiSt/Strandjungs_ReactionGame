@@ -31,10 +31,11 @@
 #define COIL_OFF  HIGH
 
 enum DROP_MODE {
-  SINGLE_ROD,
-  DUAL_ROD,
-  DUAL_ROD_TIME,
-  ALL_ROD_TIME
+                    //      switch positions
+  SINGLE_ROD,       // 0 => 00
+  DUAL_ROD,         // 1 => 01
+  DUAL_ROD_TIME,    // 2 => 10
+  ALL_ROD_TIME      // 3 => 11
 };
 
 // array of the magnet outputs
