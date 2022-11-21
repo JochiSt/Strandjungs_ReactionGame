@@ -16,3 +16,8 @@ Switch 1 is the LSB and two the MSB.
 | 0        	| 1        	| 1    	| dropping two random rods at the same time                                	|
 | 1        	| 0        	| 2    	| dropping two random rods at different times                              	|
 | 1        	| 1        	| 3    	| dropping all rods after each other (with waiting time) in a random order 	|
+
+
+
+# Hardware used
+* [ElectroMagnets](https://www.amazon.de/gp/product/B07QNL3CJ2)
